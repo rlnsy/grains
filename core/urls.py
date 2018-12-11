@@ -7,7 +7,7 @@ app_name = 'core'
 urlpatterns = [
 
 	# ex: /core/
-	path('', views.index, name="index_default"),	# same as projects root
+	path('', views.index_redirect, name="index_default"),	# needless redirect
 
 	# ex: /core/projects
 	path('projects', views.index, name="index"),	# projects list

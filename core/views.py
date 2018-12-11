@@ -12,6 +12,9 @@ def index(request):
 	}
 	return HttpResponse(template.render(context, request))
 
+def index_redirect(request):
+	return HttpResponseRedirect(reverse('core:index', args=()))
+
 def project_detail(request, project_id):
 	p = get_object_or_404(Project, pk=project_id)
 	return render(request, 'core/project-details.html', {'project': p})
