@@ -1,0 +1,12 @@
+<form action="{% url 'core:project_create' %}" method="post"> 
+
+	{% csrf_token %}
+
+	<input 	id="project_descriptor" 
+			type="text" 
+			name="descriptor" 
+			value="Name of project">
+
+	<input type="submit" value="Create">
+
+</form>

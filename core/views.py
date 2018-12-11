@@ -15,3 +15,18 @@ def index(request):
 def project_detail(request, project_id):
 	p = get_object_or_404(Project, pk=project_id)
 	return render(request, 'core/project-details.html', {'project': p})
+
+def project_form(request):
+	template = loader.get_template('core/submit.html')
+	context = {}
+	return HttpResponse(template.render(context, request))
+
+from django.utils import timezone
+
+def project_create(request):
+	descriptor = request.POST['descriptor']
+	tag = "new"
+	current_date = timezone.now()
+	p = Project(descriptor=descriptor, project_tag=tag, init_date=current_date)
+	p.save()
+	return HttpResponse("response recieved")
