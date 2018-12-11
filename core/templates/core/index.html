@@ -1,0 +1,13 @@
+{% if project_list %}
+    <ul>
+    {% for project in project_list %}
+        <li>
+        	<a href="{% url 'core:project_details' project.id %}">
+        	{{ project.descriptor }}
+        	</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No projects are available.</p>
+{% endif %}
