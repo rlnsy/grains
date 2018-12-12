@@ -32,4 +32,4 @@ def project_create(request):
 	current_date = timezone.now()
 	p = Project(descriptor=descriptor, project_tag=tag, init_date=current_date)
 	p.save()
-	return HttpResponse("response recieved")
+	return HttpResponseRedirect(reverse('core:project_details', args=(p.id,)))

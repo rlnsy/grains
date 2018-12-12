@@ -1,3 +1,5 @@
+<h1> Projects </h1>
+
 {% if project_list %}
     <ul>
     {% for project in project_list %}
@@ -11,3 +13,5 @@
 {% else %}
     <p>No projects are available.</p>
 {% endif %}
+
+<a href="{% url 'core:project_submission_form' %}"> add your own project </a>

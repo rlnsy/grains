@@ -1,3 +1,5 @@
+<h1> Add a Project </h1>
+
 <form action="{% url 'core:project_create' %}" method="post"> 
 
 	{% csrf_token %}
@@ -10,3 +12,5 @@
 	<input type="submit" value="Create">
 
 </form>
+
+<a href="{% url 'core:index' %}"> < back to projects </a>
