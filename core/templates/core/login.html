@@ -1,0 +1,23 @@
+<h1> Log In </h1>
+
+<form action="{% url 'core:user_login' %}" method="post"> 
+
+	{% csrf_token %}
+
+	<input 	id="username" 
+			type="text" 
+			name="username" 
+			value="Username">
+
+	<input 	id="password" 
+			type="text" 
+			name="password" 
+			value="Password">
+
+	<input type="submit" value="Log In">
+
+</form>
+
+<a href="{% url 'core:user_creation_form' %}"> create an account </a> <br>
+
+<a href="{% url 'core:index' %}"> < back to projects </a>

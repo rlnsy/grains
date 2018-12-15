@@ -1,0 +1,26 @@
+<h1> Create a new Account </h1>
+
+<form action="{% url 'core:user_create' %}" method="post"> 
+
+	{% csrf_token %}
+
+	<input 	id="username" 
+			type="text" 
+			name="username" 
+			value="Username">
+
+	<input 	id="password" 
+			type="text" 
+			name="password" 
+			value="Password">
+
+	<input 	id="email" 
+			type="text" 
+			name="email" 
+			value="Email">
+
+	<input type="submit" value="Create">
+
+</form>
+
+<a href="{% url 'core:user_login_form' %}"> < back to login </a>
