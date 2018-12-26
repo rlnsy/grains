@@ -2,8 +2,11 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from .models import Project
 from .utils import auth_context
+
 
 def index(request):
     project_list = Project.objects.order_by('-init_date')[:10]	# top 10
@@ -12,19 +15,24 @@ def index(request):
     context['project_list'] = project_list
     return HttpResponse(template.render(context, request))
 
+
 def index_redirect(request):
     return HttpResponseRedirect(reverse('core:index', args=()))
+
 
 def project_detail(request, project_id):
     p = get_object_or_404(Project, pk=project_id)
     return render(request, 'core/project-details.html', {'project': p})
+
 
 def project_form(request):
     template = loader.get_template('core/submit.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
+
 from django.utils import timezone
+
 
 def project_create(request):
     descriptor = request.POST['descriptor']
@@ -34,13 +42,12 @@ def project_create(request):
     p.save()
     return HttpResponseRedirect(reverse('core:project_details', args=(p.id,)))
 
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 
 def login_form(request):
     template = loader.get_template('core/login.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
 
 def user_login(request):
     uname = request.POST['username']
@@ -52,14 +59,17 @@ def user_login(request):
     else:
         return HttpResponse("invalid login")
 
+
 def user_logout(request):
     logout(request)
     return HttpResponse("successfully logged out")
+
 
 def user_form(request):
     template = loader.get_template('core/newuser.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
 
 def user_create(request):
     uname = request.POST['username']
@@ -68,6 +78,7 @@ def user_create(request):
     user = User.objects.create_user(uname, email, pwd)
     user.save()
     return HttpResponse("user created")
+
 
 def user_detail(request, username):
     context = auth_context(request)
