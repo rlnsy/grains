@@ -1,23 +1,15 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from .models import Project
+from .utils import auth_context
 
 def index(request):
     project_list = Project.objects.order_by('-init_date')[:10]	# top 10
     template = loader.get_template('core/index.html')
-
-    context = {
-        'project_list': project_list,
-        'authed': False,
-        'user': '',
-    }
-
-    if request.user.is_authenticated:
-        context['authed'] = True,
-        context['user'] = request.user.username
-
+    context = auth_context(request)
+    context['project_list'] = project_list
     return HttpResponse(template.render(context, request))
 
 def index_redirect(request):
@@ -77,3 +69,13 @@ def user_create(request):
     user.save()
     return HttpResponse("user created")
 
+def user_detail(request, username):
+    context = auth_context(request)
+    try:
+        u = User.objects.get(username=username)
+        context['username'] = username
+    except User.DoesNotExist:
+        raise Http404("User does not exist")
+
+    template = loader.get_template('core/user_profile.html')
+    return HttpResponse(template.render(context, request))
