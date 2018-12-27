@@ -2,9 +2,11 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import Project
+from django.contrib.auth.decorators import login_required
+from .models import Project, UserProxy
 from .utils import auth_context
 
 
@@ -25,20 +27,20 @@ def project_detail(request, project_id):
     return render(request, 'core/project-details.html', {'project': p})
 
 
+@login_required
 def project_form(request):
     template = loader.get_template('core/submit.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
 
-from django.utils import timezone
-
-
+@login_required
 def project_create(request):
     descriptor = request.POST['descriptor']
     tag = "new"
     current_date = timezone.now()
-    p = Project(descriptor=descriptor, project_tag=tag, init_date=current_date)
+    p = Project(descriptor=descriptor, project_tag=tag,
+                init_date=current_date, creator=request.user)
     p.save()
     return HttpResponseRedirect(reverse('core:project_details', args=(p.id,)))
 
@@ -83,8 +85,10 @@ def user_create(request):
 def user_detail(request, username):
     context = auth_context(request)
     try:
-        u = User.objects.get(username=username)
+        u = UserProxy.objects.get(username=username)
+        projects = u.get_projects()
         context['username'] = username
+        context['project_list'] = projects
     except User.DoesNotExist:
         raise Http404("User does not exist")
 

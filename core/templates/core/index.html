@@ -1,11 +1,11 @@
 <h1> Projects </h1>
 
 {% if authed %}
-    <p> Logged in as {{ user }} <p> <a href="{% url 'core:user_logout' %}"> log out </a> 
+    <p> Logged in as {{ user }} <p> <a href="{% url 'user_logout' %}"> log out </a>
 {% endif %}
 
 {% if authed == False %}
-    <a href="{% url 'core:user_login_form' %}"> log in </a>
+    <a href="{% url 'user_login_form' %}"> log in </a>
 {% endif %}
 
 {% if project_list %}

@@ -1,6 +1,6 @@
 <h1> Create a new Account </h1>
 
-<form action="{% url 'core:user_create' %}" method="post"> 
+<form action="{% url 'user_create' %}" method="post">
 
 	{% csrf_token %}
 
@@ -23,4 +23,4 @@
 
 </form>
 
-<a href="{% url 'core:user_login_form' %}"> < back to login </a>
+<a href="{% url 'user_login_form' %}"> < back to login </a>
